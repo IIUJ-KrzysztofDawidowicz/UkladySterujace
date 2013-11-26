@@ -21,15 +21,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   8 .debug_abbrev 00000281  00000000  00000000  000011d4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00000248  00000000  00000000  00001455  2**0
+  9 .debug_line   00000249  00000000  00000000  00001455  2**0
                   CONTENTS, READONLY, DEBUGGING
  10 .debug_frame  000001c0  00000000  00000000  000016a0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00000446  00000000  00000000  00001860  2**0
+ 11 .debug_str    0000043e  00000000  00000000  00001860  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    000003bd  00000000  00000000  00001ca6  2**0
+ 12 .debug_loc    000003bd  00000000  00000000  00001c9e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000088  00000000  00000000  00002063  2**0
+ 13 .debug_ranges 00000088  00000000  00000000  0000205b  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -146,7 +146,7 @@ void toggleDiodeA3()
   ba:	08 95       	ret
 
 000000bc <_ZN13TaskScheduler12initTaskListEv>:
-	bool executeIfReady(Task* task);
+	
 	
 	// Inicjalizuje tablicê tasków.
 	void initTaskList()
@@ -193,19 +193,19 @@ void toggleDiodeA3()
 
 000000f0 <_ZN13TaskScheduler9initClockEv>:
 	
-	// Inicjalizuje przerwanie czasowe pod przerwanie co milisekundê.
+	// Ustawia przerwanie czasowe pod przerwanie co milisekundê.
 	void initClock()
 	{
-		TIMSK=0b00000010;
+		TIMSK=0b00000010; //Timer/Counter0 Output Compare Match Interrupt Enable
   f0:	82 e0       	ldi	r24, 0x02	; 2
   f2:	89 bf       	out	0x39, r24	; 57
-		TCCR0=0b00000011;
+		TCCR0=0b00000011; //Ustaw prescaler na 64
   f4:	83 e0       	ldi	r24, 0x03	; 3
   f6:	83 bf       	out	0x33, r24	; 51
-		OCR0=250;
+		OCR0=250;		  //Licz do 250 (64*250=16000, przerwanie co milisekundê)
   f8:	8a ef       	ldi	r24, 0xFA	; 250
   fa:	8c bf       	out	0x3c, r24	; 60
-		sei();
+		sei();			  //Enable interrupts
   fc:	78 94       	sei
   fe:	08 95       	ret
 
@@ -323,14 +323,14 @@ void toggleDiodeA3()
  182:	6a 01       	movw	r12, r20
  184:	7b 01       	movw	r14, r22
 		
-		if(!taskListFull())
+		if(taskListFull()) return false;
  186:	0e 94 af 00 	call	0x15e	; 0x15e <_ZN13TaskScheduler12taskListFullEv>
  18a:	81 11       	cpse	r24, r1
  18c:	1b c0       	rjmp	.+54     	; 0x1c4 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm+0x50>
-		{
-			cli();
+		
+		cli(); //Disable interrupts
  18e:	f8 94       	cli
-			tasks[task_count++] = Task(callback, interval, interval);
+		tasks[task_count++] = Task(callback, interval, interval);
  190:	80 91 60 00 	lds	r24, 0x0060
  194:	e8 2f       	mov	r30, r24
  196:	f0 e0       	ldi	r31, 0x00	; 0
@@ -352,14 +352,23 @@ void toggleDiodeA3()
  1b6:	16 82       	std	Z+6, r1	; 0x06
  1b8:	8f 5f       	subi	r24, 0xFF	; 255
  1ba:	80 93 60 00 	sts	0x0060, r24
-			sei();
+		sei(); //Enable interrupts
  1be:	78 94       	sei
-			return true;
+		return true;
  1c0:	81 e0       	ldi	r24, 0x01	; 1
  1c2:	01 c0       	rjmp	.+2      	; 0x1c6 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm+0x52>
-		}
-		return false;
+	}
+
+	bool addPeriodicTask(TASK_POINTER callback, uint32_t interval)
+	{
+		
+		if(taskListFull()) return false;
  1c4:	80 e0       	ldi	r24, 0x00	; 0
+		cli(); //Disable interrupts
+		tasks[task_count++] = Task(callback, interval, interval);
+		sei(); //Enable interrupts
+		return true;
+		
 	}
  1c6:	df 91       	pop	r29
  1c8:	cf 91       	pop	r28
@@ -370,9 +379,9 @@ void toggleDiodeA3()
  1d2:	08 95       	ret
 
 000001d4 <_ZN13TaskScheduler14executeIfReadyEPNS_4TaskE>:
-	}
 	
-	// Jeœli task oczekuje na wykonanie, wykonuje is zwraca true,
+	// Jeœli task oczekuje na wykonanie, 
+	// wywo³uje zwi¹zan¹ z taskiem funkcjê i zwraca true,
 	// w przeciwnym wypadku zwraca false.
 	bool executeIfReady(Task* task)
 	{
@@ -403,8 +412,8 @@ void toggleDiodeA3()
 		return true;
  1f6:	81 e0       	ldi	r24, 0x01	; 1
  1f8:	01 c0       	rjmp	.+2      	; 0x1fc <_ZN13TaskScheduler14executeIfReadyEPNS_4TaskE+0x28>
-	
-	// Jeœli task oczekuje na wykonanie, wykonuje is zwraca true,
+	// Jeœli task oczekuje na wykonanie, 
+	// wywo³uje zwi¹zan¹ z taskiem funkcjê i zwraca true,
 	// w przeciwnym wypadku zwraca false.
 	bool executeIfReady(Task* task)
 	{
