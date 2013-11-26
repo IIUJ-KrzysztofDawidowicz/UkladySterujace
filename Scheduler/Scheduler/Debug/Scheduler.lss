@@ -1,0 +1,629 @@
+
+Scheduler.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000031e  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  0000031e  000003b2  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000081  00800060  00800060  000003b2  2**0
+                  ALLOC
+  3 .stab         000006cc  00000000  00000000  000003b4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      00000097  00000000  00000000  00000a80  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .comment      0000002f  00000000  00000000  00000b17  2**0
+                  CONTENTS, READONLY
+  6 .debug_aranges 00000098  00000000  00000000  00000b46  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_info   000005f6  00000000  00000000  00000bde  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_abbrev 00000281  00000000  00000000  000011d4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_line   00000248  00000000  00000000  00001455  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_frame  000001c0  00000000  00000000  000016a0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_str    00000446  00000000  00000000  00001860  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_loc    000003bd  00000000  00000000  00001ca6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_ranges 00000088  00000000  00000000  00002063  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2b 00 	jmp	0x56	; 0x56 <__ctors_end>
+   4:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+   8:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+   c:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  10:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  14:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  18:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  1c:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  20:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  24:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  28:	0c 94 29 01 	jmp	0x252	; 0x252 <__vector_10>
+  2c:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  30:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  34:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  38:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  3c:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  40:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  44:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  48:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  4c:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+  50:	0c 94 48 00 	jmp	0x90	; 0x90 <__bad_interrupt>
+
+00000054 <__ctors_start>:
+  54:	76 01       	movw	r14, r12
+
+00000056 <__ctors_end>:
+  56:	11 24       	eor	r1, r1
+  58:	1f be       	out	0x3f, r1	; 63
+  5a:	cf e5       	ldi	r28, 0x5F	; 95
+  5c:	d8 e0       	ldi	r29, 0x08	; 8
+  5e:	de bf       	out	0x3e, r29	; 62
+  60:	cd bf       	out	0x3d, r28	; 61
+
+00000062 <__do_clear_bss>:
+  62:	20 e0       	ldi	r18, 0x00	; 0
+  64:	a0 e6       	ldi	r26, 0x60	; 96
+  66:	b0 e0       	ldi	r27, 0x00	; 0
+  68:	01 c0       	rjmp	.+2      	; 0x6c <.do_clear_bss_start>
+
+0000006a <.do_clear_bss_loop>:
+  6a:	1d 92       	st	X+, r1
+
+0000006c <.do_clear_bss_start>:
+  6c:	a1 3e       	cpi	r26, 0xE1	; 225
+  6e:	b2 07       	cpc	r27, r18
+  70:	e1 f7       	brne	.-8      	; 0x6a <.do_clear_bss_loop>
+
+00000072 <__do_global_ctors>:
+  72:	10 e0       	ldi	r17, 0x00	; 0
+  74:	c6 e5       	ldi	r28, 0x56	; 86
+  76:	d0 e0       	ldi	r29, 0x00	; 0
+  78:	04 c0       	rjmp	.+8      	; 0x82 <__do_global_ctors+0x10>
+  7a:	22 97       	sbiw	r28, 0x02	; 2
+  7c:	fe 01       	movw	r30, r28
+  7e:	0e 94 89 01 	call	0x312	; 0x312 <__tablejump__>
+  82:	c4 35       	cpi	r28, 0x54	; 84
+  84:	d1 07       	cpc	r29, r17
+  86:	c9 f7       	brne	.-14     	; 0x7a <__do_global_ctors+0x8>
+  88:	0e 94 4d 01 	call	0x29a	; 0x29a <main>
+  8c:	0c 94 8d 01 	jmp	0x31a	; 0x31a <_exit>
+
+00000090 <__bad_interrupt>:
+  90:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000094 <_Z13toggleDiodeA0v>:
+
+
+
+void toggleDiodeA0()
+{
+	PORTA ^= (1<<PINA0);
+  94:	9b b3       	in	r25, 0x1b	; 27
+  96:	81 e0       	ldi	r24, 0x01	; 1
+  98:	89 27       	eor	r24, r25
+  9a:	8b bb       	out	0x1b, r24	; 27
+  9c:	08 95       	ret
+
+0000009e <_Z13toggleDiodeA1v>:
+}
+void toggleDiodeA1()
+{
+	PORTA ^= (1<<PINA1);
+  9e:	9b b3       	in	r25, 0x1b	; 27
+  a0:	82 e0       	ldi	r24, 0x02	; 2
+  a2:	89 27       	eor	r24, r25
+  a4:	8b bb       	out	0x1b, r24	; 27
+  a6:	08 95       	ret
+
+000000a8 <_Z13toggleDiodeA2v>:
+}
+void toggleDiodeA2()
+{
+	PORTA ^= (1<<PINA2);
+  a8:	9b b3       	in	r25, 0x1b	; 27
+  aa:	84 e0       	ldi	r24, 0x04	; 4
+  ac:	89 27       	eor	r24, r25
+  ae:	8b bb       	out	0x1b, r24	; 27
+  b0:	08 95       	ret
+
+000000b2 <_Z13toggleDiodeA3v>:
+}
+void toggleDiodeA3()
+{
+	PORTA ^= (1<<PINA3);
+  b2:	9b b3       	in	r25, 0x1b	; 27
+  b4:	88 e0       	ldi	r24, 0x08	; 8
+  b6:	89 27       	eor	r24, r25
+  b8:	8b bb       	out	0x1b, r24	; 27
+  ba:	08 95       	ret
+
+000000bc <_ZN13TaskScheduler12initTaskListEv>:
+	bool executeIfReady(Task* task);
+	
+	// Inicjalizuje tablicê tasków.
+	void initTaskList()
+	{
+		task_count = 0;
+  bc:	10 92 60 00 	sts	0x0060, r1
+  c0:	80 e0       	ldi	r24, 0x00	; 0
+  c2:	90 e0       	ldi	r25, 0x00	; 0
+		for(uint8_t i=0;i<MAX_TASKS; ++i)
+		{
+			tasks[i] = Task();
+  c4:	fc 01       	movw	r30, r24
+  c6:	ee 0f       	add	r30, r30
+  c8:	ff 1f       	adc	r31, r31
+  ca:	ee 0f       	add	r30, r30
+  cc:	ff 1f       	adc	r31, r31
+  ce:	ee 0f       	add	r30, r30
+  d0:	ff 1f       	adc	r31, r31
+  d2:	ef 59       	subi	r30, 0x9F	; 159
+  d4:	ff 4f       	sbci	r31, 0xFF	; 255
+  d6:	11 82       	std	Z+1, r1	; 0x01
+  d8:	10 82       	st	Z, r1
+  da:	13 82       	std	Z+3, r1	; 0x03
+  dc:	12 82       	std	Z+2, r1	; 0x02
+  de:	15 82       	std	Z+5, r1	; 0x05
+  e0:	14 82       	std	Z+4, r1	; 0x04
+  e2:	17 82       	std	Z+7, r1	; 0x07
+  e4:	16 82       	std	Z+6, r1	; 0x06
+  e6:	01 96       	adiw	r24, 0x01	; 1
+	
+	// Inicjalizuje tablicê tasków.
+	void initTaskList()
+	{
+		task_count = 0;
+		for(uint8_t i=0;i<MAX_TASKS; ++i)
+  e8:	80 31       	cpi	r24, 0x10	; 16
+  ea:	91 05       	cpc	r25, r1
+  ec:	59 f7       	brne	.-42     	; 0xc4 <_ZN13TaskScheduler12initTaskListEv+0x8>
+		{
+			tasks[i] = Task();
+		}
+	}
+  ee:	08 95       	ret
+
+000000f0 <_ZN13TaskScheduler9initClockEv>:
+	
+	// Inicjalizuje przerwanie czasowe pod przerwanie co milisekundê.
+	void initClock()
+	{
+		TIMSK=0b00000010;
+  f0:	82 e0       	ldi	r24, 0x02	; 2
+  f2:	89 bf       	out	0x39, r24	; 57
+		TCCR0=0b00000011;
+  f4:	83 e0       	ldi	r24, 0x03	; 3
+  f6:	83 bf       	out	0x33, r24	; 51
+		OCR0=250;
+  f8:	8a ef       	ldi	r24, 0xFA	; 250
+  fa:	8c bf       	out	0x3c, r24	; 60
+		sei();
+  fc:	78 94       	sei
+  fe:	08 95       	ret
+
+00000100 <_ZN13TaskScheduler13tickDownTimerEPNS_4TaskE>:
+		}
+	}
+	
+	// Update'uje licznik czasu danego taska i obs³uguje powi¹zane wydarzenia.
+	void tickDownTimer(Task* task) 
+	{
+ 100:	fc 01       	movw	r30, r24
+		if(task->timer <= 0) return; // Timer jest 0 dla ju¿ wykonanych, nieperiodycznych tasków.
+ 102:	84 81       	ldd	r24, Z+4	; 0x04
+ 104:	95 81       	ldd	r25, Z+5	; 0x05
+ 106:	00 97       	sbiw	r24, 0x00	; 0
+ 108:	81 f0       	breq	.+32     	; 0x12a <_ZN13TaskScheduler13tickDownTimerEPNS_4TaskE+0x2a>
+		
+		task->timer--;		
+ 10a:	01 97       	sbiw	r24, 0x01	; 1
+ 10c:	95 83       	std	Z+5, r25	; 0x05
+ 10e:	84 83       	std	Z+4, r24	; 0x04
+		if(task->timer > 0)	return;  // Jeœli timer nie osi¹gn¹³ 0, nic wiêcej nie trzeba robiæ.
+ 110:	89 2b       	or	r24, r25
+ 112:	59 f4       	brne	.+22     	; 0x12a <_ZN13TaskScheduler13tickDownTimerEPNS_4TaskE+0x2a>
+		
+		task->timesToExecute++;
+ 114:	86 81       	ldd	r24, Z+6	; 0x06
+ 116:	97 81       	ldd	r25, Z+7	; 0x07
+ 118:	01 96       	adiw	r24, 0x01	; 1
+ 11a:	97 83       	std	Z+7, r25	; 0x07
+ 11c:	86 83       	std	Z+6, r24	; 0x06
+		if(task->interval != 0)		 // Jeœli task jest periodyczny, resetuj timer.
+ 11e:	82 81       	ldd	r24, Z+2	; 0x02
+ 120:	93 81       	ldd	r25, Z+3	; 0x03
+ 122:	00 97       	sbiw	r24, 0x00	; 0
+ 124:	11 f0       	breq	.+4      	; 0x12a <_ZN13TaskScheduler13tickDownTimerEPNS_4TaskE+0x2a>
+			task->timer = task->interval;
+ 126:	95 83       	std	Z+5, r25	; 0x05
+ 128:	84 83       	std	Z+4, r24	; 0x04
+ 12a:	08 95       	ret
+
+0000012c <_ZN13TaskScheduler15handleClockTickEv>:
+	
+	
+	// Obs³uguje sygna³, ¿e up³ynê³a jednostka czasu.
+	// (Przerwanie co milsekundê)
+	void handleClockTick()
+	{
+ 12c:	cf 93       	push	r28
+		for(uint8_t i = 0; i<task_count; ++i)
+ 12e:	80 91 60 00 	lds	r24, 0x0060
+ 132:	88 23       	and	r24, r24
+ 134:	91 f0       	breq	.+36     	; 0x15a <_ZN13TaskScheduler15handleClockTickEv+0x2e>
+ 136:	c0 e0       	ldi	r28, 0x00	; 0
+		{
+			tickDownTimer(tasks + i);
+ 138:	8c 2f       	mov	r24, r28
+ 13a:	90 e0       	ldi	r25, 0x00	; 0
+ 13c:	88 0f       	add	r24, r24
+ 13e:	99 1f       	adc	r25, r25
+ 140:	88 0f       	add	r24, r24
+ 142:	99 1f       	adc	r25, r25
+ 144:	88 0f       	add	r24, r24
+ 146:	99 1f       	adc	r25, r25
+ 148:	8f 59       	subi	r24, 0x9F	; 159
+ 14a:	9f 4f       	sbci	r25, 0xFF	; 255
+ 14c:	0e 94 80 00 	call	0x100	; 0x100 <_ZN13TaskScheduler13tickDownTimerEPNS_4TaskE>
+	
+	// Obs³uguje sygna³, ¿e up³ynê³a jednostka czasu.
+	// (Przerwanie co milsekundê)
+	void handleClockTick()
+	{
+		for(uint8_t i = 0; i<task_count; ++i)
+ 150:	cf 5f       	subi	r28, 0xFF	; 255
+ 152:	80 91 60 00 	lds	r24, 0x0060
+ 156:	c8 17       	cp	r28, r24
+ 158:	78 f3       	brcs	.-34     	; 0x138 <_ZN13TaskScheduler15handleClockTickEv+0xc>
+		{
+			tickDownTimer(tasks + i);
+		}
+	}
+ 15a:	cf 91       	pop	r28
+ 15c:	08 95       	ret
+
+0000015e <_ZN13TaskScheduler12taskListFullEv>:
+	}
+	
+	// Zwraca true jeœli tablica tasków jest pe³na i nie mo¿na dodaæ wiêcej.
+	bool taskListFull()
+	{
+		return task_count + 1 >= MAX_TASKS;
+ 15e:	20 91 60 00 	lds	r18, 0x0060
+ 162:	30 e0       	ldi	r19, 0x00	; 0
+ 164:	2f 5f       	subi	r18, 0xFF	; 255
+ 166:	3f 4f       	sbci	r19, 0xFF	; 255
+ 168:	81 e0       	ldi	r24, 0x01	; 1
+ 16a:	20 31       	cpi	r18, 0x10	; 16
+ 16c:	31 05       	cpc	r19, r1
+ 16e:	0c f4       	brge	.+2      	; 0x172 <_ZN13TaskScheduler12taskListFullEv+0x14>
+ 170:	80 e0       	ldi	r24, 0x00	; 0
+	}
+ 172:	08 95       	ret
+
+00000174 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm>:
+
+	bool addPeriodicTask(TASK_POINTER callback, uint32_t interval)
+	{
+ 174:	cf 92       	push	r12
+ 176:	df 92       	push	r13
+ 178:	ef 92       	push	r14
+ 17a:	ff 92       	push	r15
+ 17c:	cf 93       	push	r28
+ 17e:	df 93       	push	r29
+ 180:	ec 01       	movw	r28, r24
+ 182:	6a 01       	movw	r12, r20
+ 184:	7b 01       	movw	r14, r22
+		
+		if(!taskListFull())
+ 186:	0e 94 af 00 	call	0x15e	; 0x15e <_ZN13TaskScheduler12taskListFullEv>
+ 18a:	81 11       	cpse	r24, r1
+ 18c:	1b c0       	rjmp	.+54     	; 0x1c4 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm+0x50>
+		{
+			cli();
+ 18e:	f8 94       	cli
+			tasks[task_count++] = Task(callback, interval, interval);
+ 190:	80 91 60 00 	lds	r24, 0x0060
+ 194:	e8 2f       	mov	r30, r24
+ 196:	f0 e0       	ldi	r31, 0x00	; 0
+ 198:	ee 0f       	add	r30, r30
+ 19a:	ff 1f       	adc	r31, r31
+ 19c:	ee 0f       	add	r30, r30
+ 19e:	ff 1f       	adc	r31, r31
+ 1a0:	ee 0f       	add	r30, r30
+ 1a2:	ff 1f       	adc	r31, r31
+ 1a4:	ef 59       	subi	r30, 0x9F	; 159
+ 1a6:	ff 4f       	sbci	r31, 0xFF	; 255
+ 1a8:	d1 83       	std	Z+1, r29	; 0x01
+ 1aa:	c0 83       	st	Z, r28
+ 1ac:	d3 82       	std	Z+3, r13	; 0x03
+ 1ae:	c2 82       	std	Z+2, r12	; 0x02
+ 1b0:	d5 82       	std	Z+5, r13	; 0x05
+ 1b2:	c4 82       	std	Z+4, r12	; 0x04
+ 1b4:	17 82       	std	Z+7, r1	; 0x07
+ 1b6:	16 82       	std	Z+6, r1	; 0x06
+ 1b8:	8f 5f       	subi	r24, 0xFF	; 255
+ 1ba:	80 93 60 00 	sts	0x0060, r24
+			sei();
+ 1be:	78 94       	sei
+			return true;
+ 1c0:	81 e0       	ldi	r24, 0x01	; 1
+ 1c2:	01 c0       	rjmp	.+2      	; 0x1c6 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm+0x52>
+		}
+		return false;
+ 1c4:	80 e0       	ldi	r24, 0x00	; 0
+	}
+ 1c6:	df 91       	pop	r29
+ 1c8:	cf 91       	pop	r28
+ 1ca:	ff 90       	pop	r15
+ 1cc:	ef 90       	pop	r14
+ 1ce:	df 90       	pop	r13
+ 1d0:	cf 90       	pop	r12
+ 1d2:	08 95       	ret
+
+000001d4 <_ZN13TaskScheduler14executeIfReadyEPNS_4TaskE>:
+	}
+	
+	// Jeœli task oczekuje na wykonanie, wykonuje is zwraca true,
+	// w przeciwnym wypadku zwraca false.
+	bool executeIfReady(Task* task)
+	{
+ 1d4:	cf 93       	push	r28
+ 1d6:	df 93       	push	r29
+ 1d8:	ec 01       	movw	r28, r24
+		if(task->timesToExecute <= 0) return false;
+ 1da:	8e 81       	ldd	r24, Y+6	; 0x06
+ 1dc:	9f 81       	ldd	r25, Y+7	; 0x07
+ 1de:	89 2b       	or	r24, r25
+ 1e0:	61 f0       	breq	.+24     	; 0x1fa <_ZN13TaskScheduler14executeIfReadyEPNS_4TaskE+0x26>
+		
+		
+		task->function();
+ 1e2:	e8 81       	ld	r30, Y
+ 1e4:	f9 81       	ldd	r31, Y+1	; 0x01
+ 1e6:	09 95       	icall
+		cli();
+ 1e8:	f8 94       	cli
+		task->timesToExecute--;
+ 1ea:	8e 81       	ldd	r24, Y+6	; 0x06
+ 1ec:	9f 81       	ldd	r25, Y+7	; 0x07
+ 1ee:	01 97       	sbiw	r24, 0x01	; 1
+ 1f0:	9f 83       	std	Y+7, r25	; 0x07
+ 1f2:	8e 83       	std	Y+6, r24	; 0x06
+		sei();
+ 1f4:	78 94       	sei
+		return true;
+ 1f6:	81 e0       	ldi	r24, 0x01	; 1
+ 1f8:	01 c0       	rjmp	.+2      	; 0x1fc <_ZN13TaskScheduler14executeIfReadyEPNS_4TaskE+0x28>
+	
+	// Jeœli task oczekuje na wykonanie, wykonuje is zwraca true,
+	// w przeciwnym wypadku zwraca false.
+	bool executeIfReady(Task* task)
+	{
+		if(task->timesToExecute <= 0) return false;
+ 1fa:	80 e0       	ldi	r24, 0x00	; 0
+		cli();
+		task->timesToExecute--;
+		sei();
+		return true;
+		
+	}
+ 1fc:	df 91       	pop	r29
+ 1fe:	cf 91       	pop	r28
+ 200:	08 95       	ret
+
+00000202 <_ZN13TaskScheduler8scheduleEv>:
+	}
+
+	// Jeœli lista tasków jest pusta, nic nie robi.
+	// W przeciwnym wypadku wykonuje taski w pêtli nieskoñczonej.
+	void schedule()
+	{
+ 202:	1f 93       	push	r17
+ 204:	cf 93       	push	r28
+ 206:	df 93       	push	r29
+		initClock();
+ 208:	0e 94 78 00 	call	0xf0	; 0xf0 <_ZN13TaskScheduler9initClockEv>
+		if(task_count == 0) return;
+ 20c:	80 91 60 00 	lds	r24, 0x0060
+ 210:	88 23       	and	r24, r24
+ 212:	d9 f0       	breq	.+54     	; 0x24a <_ZN13TaskScheduler8scheduleEv+0x48>
+ 214:	c0 e0       	ldi	r28, 0x00	; 0
+		
+		uint8_t i;
+		while(1)
+		{
+			for(i = 0; i < task_count; ++i) 
+ 216:	10 e0       	ldi	r17, 0x00	; 0
+ 218:	d1 2f       	mov	r29, r17
+ 21a:	11 c0       	rjmp	.+34     	; 0x23e <_ZN13TaskScheduler8scheduleEv+0x3c>
+			{
+				// executeIfReady zwraca true jeœli task siê wykona³
+				if(executeIfReady(tasks+i)) break;
+ 21c:	8c 2f       	mov	r24, r28
+ 21e:	90 e0       	ldi	r25, 0x00	; 0
+ 220:	88 0f       	add	r24, r24
+ 222:	99 1f       	adc	r25, r25
+ 224:	88 0f       	add	r24, r24
+ 226:	99 1f       	adc	r25, r25
+ 228:	88 0f       	add	r24, r24
+ 22a:	99 1f       	adc	r25, r25
+ 22c:	8f 59       	subi	r24, 0x9F	; 159
+ 22e:	9f 4f       	sbci	r25, 0xFF	; 255
+ 230:	0e 94 ea 00 	call	0x1d4	; 0x1d4 <_ZN13TaskScheduler14executeIfReadyEPNS_4TaskE>
+ 234:	81 11       	cpse	r24, r1
+ 236:	02 c0       	rjmp	.+4      	; 0x23c <_ZN13TaskScheduler8scheduleEv+0x3a>
+		if(task_count == 0) return;
+		
+		uint8_t i;
+		while(1)
+		{
+			for(i = 0; i < task_count; ++i) 
+ 238:	cf 5f       	subi	r28, 0xFF	; 255
+ 23a:	01 c0       	rjmp	.+2      	; 0x23e <_ZN13TaskScheduler8scheduleEv+0x3c>
+ 23c:	c1 2f       	mov	r28, r17
+ 23e:	80 91 60 00 	lds	r24, 0x0060
+ 242:	c8 17       	cp	r28, r24
+ 244:	58 f3       	brcs	.-42     	; 0x21c <_ZN13TaskScheduler8scheduleEv+0x1a>
+ 246:	cd 2f       	mov	r28, r29
+ 248:	fc cf       	rjmp	.-8      	; 0x242 <_ZN13TaskScheduler8scheduleEv+0x40>
+				// executeIfReady zwraca true jeœli task siê wykona³
+				if(executeIfReady(tasks+i)) break;
+				
+			}
+		}
+	}
+ 24a:	df 91       	pop	r29
+ 24c:	cf 91       	pop	r28
+ 24e:	1f 91       	pop	r17
+ 250:	08 95       	ret
+
+00000252 <__vector_10>:
+}
+
+
+ISR(TIMER0_COMP_vect)
+{
+ 252:	1f 92       	push	r1
+ 254:	0f 92       	push	r0
+ 256:	0f b6       	in	r0, 0x3f	; 63
+ 258:	0f 92       	push	r0
+ 25a:	11 24       	eor	r1, r1
+ 25c:	2f 93       	push	r18
+ 25e:	3f 93       	push	r19
+ 260:	4f 93       	push	r20
+ 262:	5f 93       	push	r21
+ 264:	6f 93       	push	r22
+ 266:	7f 93       	push	r23
+ 268:	8f 93       	push	r24
+ 26a:	9f 93       	push	r25
+ 26c:	af 93       	push	r26
+ 26e:	bf 93       	push	r27
+ 270:	ef 93       	push	r30
+ 272:	ff 93       	push	r31
+	handleClockTick();
+ 274:	0e 94 96 00 	call	0x12c	; 0x12c <_ZN13TaskScheduler15handleClockTickEv>
+	
+}
+ 278:	ff 91       	pop	r31
+ 27a:	ef 91       	pop	r30
+ 27c:	bf 91       	pop	r27
+ 27e:	af 91       	pop	r26
+ 280:	9f 91       	pop	r25
+ 282:	8f 91       	pop	r24
+ 284:	7f 91       	pop	r23
+ 286:	6f 91       	pop	r22
+ 288:	5f 91       	pop	r21
+ 28a:	4f 91       	pop	r20
+ 28c:	3f 91       	pop	r19
+ 28e:	2f 91       	pop	r18
+ 290:	0f 90       	pop	r0
+ 292:	0f be       	out	0x3f, r0	; 63
+ 294:	0f 90       	pop	r0
+ 296:	1f 90       	pop	r1
+ 298:	18 95       	reti
+
+0000029a <main>:
+
+
+int main(void)
+{
+	DDRA = 0xFF;
+ 29a:	8f ef       	ldi	r24, 0xFF	; 255
+ 29c:	8a bb       	out	0x1a, r24	; 26
+	
+	initTaskList();
+ 29e:	0e 94 5e 00 	call	0xbc	; 0xbc <_ZN13TaskScheduler12initTaskListEv>
+	addPeriodicTask(toggleDiodeA0, 20);
+ 2a2:	44 e1       	ldi	r20, 0x14	; 20
+ 2a4:	50 e0       	ldi	r21, 0x00	; 0
+ 2a6:	60 e0       	ldi	r22, 0x00	; 0
+ 2a8:	70 e0       	ldi	r23, 0x00	; 0
+ 2aa:	8a e4       	ldi	r24, 0x4A	; 74
+ 2ac:	90 e0       	ldi	r25, 0x00	; 0
+ 2ae:	0e 94 ba 00 	call	0x174	; 0x174 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm>
+	addPeriodicTask(toggleDiodeA1, 20);
+ 2b2:	44 e1       	ldi	r20, 0x14	; 20
+ 2b4:	50 e0       	ldi	r21, 0x00	; 0
+ 2b6:	60 e0       	ldi	r22, 0x00	; 0
+ 2b8:	70 e0       	ldi	r23, 0x00	; 0
+ 2ba:	8f e4       	ldi	r24, 0x4F	; 79
+ 2bc:	90 e0       	ldi	r25, 0x00	; 0
+ 2be:	0e 94 ba 00 	call	0x174	; 0x174 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm>
+	addPeriodicTask(toggleDiodeA2, 5);
+ 2c2:	45 e0       	ldi	r20, 0x05	; 5
+ 2c4:	50 e0       	ldi	r21, 0x00	; 0
+ 2c6:	60 e0       	ldi	r22, 0x00	; 0
+ 2c8:	70 e0       	ldi	r23, 0x00	; 0
+ 2ca:	84 e5       	ldi	r24, 0x54	; 84
+ 2cc:	90 e0       	ldi	r25, 0x00	; 0
+ 2ce:	0e 94 ba 00 	call	0x174	; 0x174 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm>
+	addPeriodicTask(toggleDiodeA3, 10);
+ 2d2:	4a e0       	ldi	r20, 0x0A	; 10
+ 2d4:	50 e0       	ldi	r21, 0x00	; 0
+ 2d6:	60 e0       	ldi	r22, 0x00	; 0
+ 2d8:	70 e0       	ldi	r23, 0x00	; 0
+ 2da:	89 e5       	ldi	r24, 0x59	; 89
+ 2dc:	90 e0       	ldi	r25, 0x00	; 0
+ 2de:	0e 94 ba 00 	call	0x174	; 0x174 <_ZN13TaskScheduler15addPeriodicTaskEPFvvEm>
+	schedule();
+ 2e2:	0e 94 01 01 	call	0x202	; 0x202 <_ZN13TaskScheduler8scheduleEv>
+	return 0;
+ 2e6:	80 e0       	ldi	r24, 0x00	; 0
+ 2e8:	90 e0       	ldi	r25, 0x00	; 0
+ 2ea:	08 95       	ret
+
+000002ec <_GLOBAL__sub_I__ZN13TaskScheduler5tasksE>:
+ 2ec:	e1 e6       	ldi	r30, 0x61	; 97
+ 2ee:	f0 e0       	ldi	r31, 0x00	; 0
+ 2f0:	81 ee       	ldi	r24, 0xE1	; 225
+ 2f2:	90 e0       	ldi	r25, 0x00	; 0
+		TASK_POINTER function;		// Czynnoœæ, któr¹ wykonuje task. Funkcja bez argumentów zwracaj¹ca void.
+		uint16_t interval;			// Co ile task jest wykonywany.
+		uint16_t timer;				// Czas do nastêpnego wykonania.
+		uint16_t timesToExecute;	// Licznik oczekuj¹cych wykonañ.
+		
+		Task(): function(0), interval(0), timer(0), timesToExecute(0) {};
+ 2f4:	11 82       	std	Z+1, r1	; 0x01
+ 2f6:	10 82       	st	Z, r1
+ 2f8:	13 82       	std	Z+3, r1	; 0x03
+ 2fa:	12 82       	std	Z+2, r1	; 0x02
+ 2fc:	15 82       	std	Z+5, r1	; 0x05
+ 2fe:	14 82       	std	Z+4, r1	; 0x04
+ 300:	17 82       	std	Z+7, r1	; 0x07
+ 302:	16 82       	std	Z+6, r1	; 0x06
+ 304:	38 96       	adiw	r30, 0x08	; 8
+			timer = initialDelay;
+			timesToExecute = 0;
+		}
+	};
+	
+	Task tasks[MAX_TASKS];
+ 306:	e8 17       	cp	r30, r24
+ 308:	f9 07       	cpc	r31, r25
+ 30a:	a1 f7       	brne	.-24     	; 0x2f4 <_GLOBAL__sub_I__ZN13TaskScheduler5tasksE+0x8>
+ 30c:	08 95       	ret
+
+0000030e <__tablejump2__>:
+ 30e:	ee 0f       	add	r30, r30
+ 310:	ff 1f       	adc	r31, r31
+
+00000312 <__tablejump__>:
+ 312:	05 90       	lpm	r0, Z+
+ 314:	f4 91       	lpm	r31, Z
+ 316:	e0 2d       	mov	r30, r0
+ 318:	09 94       	ijmp
+
+0000031a <_exit>:
+ 31a:	f8 94       	cli
+
+0000031c <__stop_program>:
+ 31c:	ff cf       	rjmp	.-2      	; 0x31c <__stop_program>
